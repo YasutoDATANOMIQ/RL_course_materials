@@ -10,7 +10,7 @@
 ### "RL" without trial and errors
  - [x] Preparing basic grid map environment and agent
  - [x] Visualizin DP with grid map
- - [ ] Making DP demowith state-transit diagrams
+ - [ ] Making DP demo with state-transit diagrams
  - [ ] Cleaning up and commenting on code
 
 ### Introducing "experiences" in RL 
@@ -22,16 +22,18 @@
  - [x] Exploitation vs exploration demo with multi-armed bandit
  - [ ] Exploitation vs exploration demo with Q-learning
  - [ ] Fixing Dyna script
- - [ ] Visualizing tree search
+ - [ ] (Optional) Visualizing tree search with state transition diagram
+ - [ ] Visualizing tree search with tic tac toe
+ - [ ] Tabular actor-critic RL with advantage function
  - [ ] Cleaning up and commenting on code
 
 ### Making environments and agents richer
- - [ ] Finding implementation of linear function approximation
+ - [x] Finding implementation of linear function approximation
  - [x] Finding implementation of policy gradient
  - [ ] Cleaning up and commenting on code
 
 ### Advanced and practical RL
  - [ ] (Benjamin) Financial RL 
  - [ ] (Benjamin) Video game RL (probably with Deep Q-Netowrk)
- - [ ] (Optional) Industrial RL with kuka simulator (hopefully with policy gradient)
+ - [ ] (Optional) Industrial RL with kuka simulator (hopefully with policy gradient and with TF Agent)
  - [ ] Cleaning up and commenting on code
