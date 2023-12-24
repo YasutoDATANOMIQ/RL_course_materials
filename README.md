@@ -21,20 +21,23 @@
 
 ### Elaborating RL by strategy mode settings
  - [x] Exploitation vs exploration demo with multi-armed bandit
+ - [x] UCB1 demo with multi-armed bandit
  - [ ] Exploitation vs exploration demo with Q-learning
- - [ ] Fixing Dyna script
+ - [x] Fixing Dyna script
  - [ ] (Optional) Visualizing tree search with state transition diagram
  - [ ] Visualizing tree search with tic tac toe
  - [ ] Tabular actor-critic RL with advantage function
  - [ ] Cleaning up and commenting on code
 
 ### Making environments and agents richer
- - [x] Finding implementation of linear function approximation
- - [x] Finding implementation of policy gradient
+ - [x] Finding implementation of control with linear function approximation
+ - [x] Finding implementation of policy gradient with neural nets
+ - [ ] Finding implementation of policy gradient e.g. REINFORCE without neural nets
  - [ ] Cleaning up and commenting on code
 
 ### Advanced and practical RL
  - [ ] (Benjamin) Financial RL 
  - [ ] (Benjamin) Video game RL (probably with Deep Q-Netowrk)
  - [ ] (Optional) Industrial RL with kuka simulator (hopefully with policy gradient and with TF Agent)
+ - [ ] (Optional) Finding demos only to show for advanced topic such e.g. distributional neural nets
  - [ ] Cleaning up and commenting on code
