@@ -314,5 +314,4 @@ if __name__ == "__main__":
 
         # print( agent.theta_list)
         print("epi: %d, eps: %.3f, alpha: %.3f, reward %d: " % (epi, EPSILON, ALPHA, tmp))
-
     env.close()
