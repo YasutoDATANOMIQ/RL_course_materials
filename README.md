@@ -7,6 +7,10 @@
 - video_game_RL: *Please write independent scripts of RL with CNN
 
 # Tasks left
+### General tasks
+ - [ ] Cleaning and adjusting scripts so that they can be used for lectures
+ - [ ] Checking copy rights and clarifying sources
+
 ### "RL" without trial and errors
  - [x] Preparing basic grid map environment and agent
  - [x] Visualizin DP with grid map
@@ -32,6 +36,8 @@
 ### Making environments and agents richer
  - [x] Finding implementation of control with linear function approximation
  - [x] Finding implementation of policy gradient with neural nets
+ - [ ] Supress warnings in baby_step scripts
+ - [ ] Raising TF1 to TF2 in baby_step scripts
  - [ ] Finding implementation of policy gradient e.g. REINFORCE without neural nets
  - [ ] Cleaning up and commenting on code
 
