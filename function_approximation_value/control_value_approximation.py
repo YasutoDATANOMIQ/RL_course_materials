@@ -1,4 +1,6 @@
 # Source:
+# https://github.com/triwave33/reinforcement_learning/blob/master/qiita/RL_11_linear_approx.py
+# https://qiita.com/triwave33/items/78780ec37babf154137d
 
 ### -*-coding:utf-8-*-
 import random
