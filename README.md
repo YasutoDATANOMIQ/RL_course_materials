@@ -10,6 +10,7 @@
 ### General tasks
  - [ ] Cleaning and adjusting scripts so that they can be used for lectures
  - [ ] Checking copy rights and clarifying sources
+ - [ ] Changing data structure of states in basic MDP environemnts (Don't use defaultdict)
 
 ### "RL" without trial and errors
  - [x] Preparing basic grid map environment and agent
@@ -18,7 +19,8 @@
  - [ ] Cleaning up and commenting on code
 
 ### Introducing "experiences" in RL 
- - [x] Making Q-learning, SARSA demo with animation 
+ - [x] Making Q-learning, SARSA 
+ - [ ] Animating the demo
  - [ ] Making policy evaluation demo with a fixed policy
  - [ ] Introducing Open AI gym as an environment
  - [ ] Cleaning up and commenting on code
