@@ -1,5 +1,7 @@
 from enum import Enum
 import numpy as np
+# import matplotlib.pyplot as plt
+# from matplotlib.patches import Rectangle
 
 
 class State():
@@ -30,7 +32,17 @@ class Action(Enum):
     RIGHT = -2
 
 
-class Environment():
+
+# TODO: implementing a MDP environment with state transition model
+class StateTransitEnvironment():
+    pass
+
+# class BellmanBackupEnvironment():
+#     pass
+
+
+
+class GridMapEnvironment():
 
     def __init__(self, grid, move_prob=0.8):
         # grid is 2d-array. Its values are treated as an attribute.
