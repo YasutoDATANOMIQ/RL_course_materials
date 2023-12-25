@@ -1,7 +1,5 @@
 from enum import Enum
 import numpy as np
-# import matplotlib.pyplot as plt
-# from matplotlib.patches import Rectangle
 
 
 class State():
@@ -26,11 +24,12 @@ class State():
 
 
 class Action(Enum):
-    UP = 1
-    DOWN = -1
+    UP = 0
+    DOWN = 1
     LEFT = 2
-    RIGHT = -2
+    RIGHT = 3
 
+opposite_direction_dict = {0:1, 1:0, 2:3, 3:2}
 
 
 # TODO: implementing a MDP environment with state transition model
@@ -50,7 +49,7 @@ class GridMapEnvironment():
         #  0: ordinary cell
         #  -1: damage cell (game end)
         #  1: reward cell (game end)
-        #  9: block cell (can't locate agent)
+        #  np.nan: block cell (can't locate agent)
         self.grid = grid
         self.agent_state = State()
 
@@ -72,10 +71,22 @@ class GridMapEnvironment():
     def column_length(self):
         return len(self.grid[0])
 
+    # @property
+    # def actions(self):
+    #     return [Action.UP, Action.DOWN,
+    #             Action.LEFT, Action.RIGHT]
+
     @property
     def actions(self):
-        return [Action.UP, Action.DOWN,
-                Action.LEFT, Action.RIGHT]
+        return [0, 1, 2, 3]
+
+    # @property
+    # def actions(self):
+    #     # 0: up
+    #     # 1: down
+    #     # 2: left
+    #     # 3: right
+    #     return list(range(4))
 
     @property
     def states(self):
@@ -83,7 +94,8 @@ class GridMapEnvironment():
         for row in range(self.row_length):
             for column in range(self.column_length):
                 # Block cells are not included to the state.
-                if self.grid[row][column] != 9:
+                # if self.grid[row][column] != 9:
+                if np.isnan(self.grid[row][column])==False:
                     states.append(State(row, column))
         return states
 
@@ -93,7 +105,10 @@ class GridMapEnvironment():
             # Already on the terminal cell.
             return transition_probs
 
-        opposite_direction = Action(action.value * -1)
+        # print("action: {}".format(action))
+        # opposite_direction = Action(action.value * -1)
+
+        opposite_direction = opposite_direction_dict[action]
 
         for a in self.actions:
             prob = 0
@@ -123,13 +138,17 @@ class GridMapEnvironment():
         next_state = state.clone()
 
         # Execute an action (move).
-        if action == Action.UP:
+        # if action == Action.UP:
+        if action==0:
             next_state.row -= 1
-        elif action == Action.DOWN:
+        # elif action == Action.DOWN:
+        elif action==1:
             next_state.row += 1
-        elif action == Action.LEFT:
+        # elif action == Action.LEFT:
+        elif action==2:
             next_state.column -= 1
-        elif action == Action.RIGHT:
+        # elif action == Action.RIGHT:
+        elif action==3:
             next_state.column += 1
 
         # Check whether a state is out of the grid.
@@ -139,7 +158,8 @@ class GridMapEnvironment():
             next_state = state
 
         # Check whether the agent bumped a block cell.
-        if self.grid[next_state.row][next_state.column] == 9:
+        # if self.grid[next_state.row][next_state.column] == 9:
+        if np.isnan(self.grid[next_state.row][next_state.column])==True:
             next_state = state
 
         return next_state
@@ -171,7 +191,7 @@ class GridMapEnvironment():
         if next_state is not None:
             self.agent_state = next_state
 
-        return next_state, reward, done
+        return next_state, reward, done, None, None
 
     def transit(self, state, action):
         transition_probs = self.transit_func(state, action)

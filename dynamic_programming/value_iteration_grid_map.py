@@ -6,9 +6,11 @@ from DP_planner import ValueIterationPlanner
 
 
 if __name__ == '__main__':
+    block = np.nan
+    # Setting up a grid map environment
     grid = np.array([[0, 0, 0, 0, 0, 0],
-                     [0, 9, 1, 0, 0, 0],
-                     [0, 9, 9, -1, 0, 0],
+                     [0, block, 1, 0, 0, 0],
+                     [0, block, block, -1, 0, 0],
                      [0, -1, 0, 0, 0, 0],
                      [0, 0, 0, 0, 0, 0]
                      ])
