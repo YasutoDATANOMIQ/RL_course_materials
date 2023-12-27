@@ -43,52 +43,6 @@ class Planner():
 
         return grid
 
-
-    def draw_single_grid_map_values(self, ax, grid_map_value, grid_map_policy=None, if_draw_policies=True):
-        for i in range(self.env.row_length):
-            for j in range(self.env.column_length):
-
-                if (self.env.grid[i][j] == 1):
-                    ax.add_patch(mpatches.Rectangle((j, self.env.row_length - i - 1), 1, 1, fc='mediumaquamarine'))
-                    continue
-
-                elif (self.env.grid[i][j] == 9):
-                    ax.add_patch(mpatches.Rectangle((j, self.env.row_length - i - 1), 1, 1, fc='silver'))
-                    continue
-
-                elif (self.env.grid[i][j] == -1):
-                    ax.add_patch(mpatches.Rectangle((j, self.env.row_length - i - 1), 1, 1, fc='red'))
-                    continue
-
-                center_x = 0.5 + j
-                center_y = self.env.row_length - 0.5 - i
-
-                if grid_map_policy is not None:
-                    action_value_dict = grid_map_policy[self.state_list[i * self.env.row_length + j]]
-
-                    up = action_value_dict[0]
-                    down = action_value_dict[1]
-                    left = action_value_dict[2]
-                    right = action_value_dict[3]
-
-                    plt.arrow(center_x, center_y + 0.2, 0.0, 0.15 * up, width=0.025 * up, head_width=0.075 * up,
-                              head_length=0.1 * up, fc='k', ec='k')
-                    plt.arrow(center_x, center_y - 0.2, 0.0, -0.15 * down, width=0.025 * down, head_width=0.075 * down,
-                              head_length=0.1 * down, fc='k', ec='k')
-                    plt.arrow(center_x + 0.2, center_y, 0.15 * right, 0.0, width=0.025 * right, head_width=0.075 * right,
-                              head_length=0.1 * right, fc='k', ec='k')
-                    plt.arrow(center_x - 0.2, center_y, -0.15 * left, 0.0, width=0.025 * left, head_width=0.075 * left,
-                              head_length=0.1 * left, fc='k', ec='k', label='Lokale Orientierung')
-
-                ax.add_patch(mpatches.Rectangle((j, self.env.row_length - i - 1), 1, 1, alpha=max(0, grid_map_value[i][j]), fc='darkorange'))
-                plt.text(center_x, center_y, str(round(grid_map_value[i][j], 2)), size=10, ha='center', va='center', color='k')
-
-
-        return ax
-
-
-
-
 class ValueIterationPlanner(Planner):
     def __init__(self, env):
         super().__init__(env)
@@ -137,17 +91,7 @@ class ValueIterationPlanner(Planner):
             # print("Iteration: " + str(cnt + 1))
             ax = fig.add_subplot(2, len(value_list)//2, cnt + 1)
             num_font_size = 10
-            ax = self.draw_single_grid_map_values(ax, value)
-
-            # 目盛りと枠の非表示
-            ax.tick_params(axis='both', which='both', bottom='off', top='off',
-                           labelbottom='off', right='off', left='off', labelleft='off')
-
-            ax.axis([0, self.env.column_length, 0, self.env.row_length])
-            ax.set_xticks(np.array(range(self.env.column_length)) + 1)
-            ax.set_yticks(np.array(range(self.env.row_length)) + 1)
-            ax.grid(color='k', linewidth=2.0)
-            ax.title.set_text('Iteration: ' + str(cnt + 1))
+            ax = self.draw_single_grid_map_values(ax, value, cnt)
 
         norm = mpl.colors.Normalize(vmin=0, vmax=1)
         sm = plt.cm.ScalarMappable(cmap=mpl.cm.Oranges, norm=norm)
@@ -272,16 +216,7 @@ class PolicyIterationPlanner(Planner):
 
         for cnt, (value, policy) in enumerate(value_plan_list):
             ax = fig.add_subplot(1, len(value_plan_list), cnt + 1)
-            ax = self.draw_single_grid_map_values(ax, value, grid_map_policy=policy)
-
-            plt.tick_params(axis='both', which='both', bottom='off', top='off',
-                            labelbottom='off', right='off', left='off', labelleft='off')
-
-            ax.axis([0, self.env.column_length, 0, self.env.row_length])
-            ax.set_xticks(np.array(range(self.env.column_length)) + 1)
-            ax.set_yticks(np.array(range(self.env.row_length)) + 1)
-            ax.grid(color='k', linewidth=2.0)
-            ax.title.set_text('Iteration: ' + str(cnt + 1))
+            ax = self.env.draw_single_grid_map_values(ax, cnt, grid_map_value=value, grid_map_policy=policy)
 
         colors = ["white", "darkorange"]
         norm = mpl.colors.Normalize(vmin=0, vmax=1)

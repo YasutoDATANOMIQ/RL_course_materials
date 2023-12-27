@@ -39,9 +39,6 @@ opposite_direction_dict = {0:1, 1:0, 2:3, 3:2}
 class StateTransitEnvironment():
     pass
 
-# class BellmanBackupEnvironment():
-#     pass
-
 
 
 class GridMapEnvironment():
@@ -55,6 +52,8 @@ class GridMapEnvironment():
         #  np.nan: block cell (can't locate agent)
         self.grid = grid
         self.agent_state = State()
+
+        self.state_idx_dict = {s:i for i, s in enumerate(self.states)}
 
         # Default reward is minus. Just like a poison swamp.
         # It means the agent has to reach the goal fast!
@@ -88,7 +87,6 @@ class GridMapEnvironment():
         for row in range(self.row_length):
             for column in range(self.column_length):
                 # Block cells are not included to the state.
-                # if self.grid[row][column] != 9:
                 if np.isnan(self.grid[row][column])==False:
                     states.append(State(row, column))
         return states
@@ -145,7 +143,6 @@ class GridMapEnvironment():
             next_state = state
 
         # Check whether the agent bumped a block cell.
-        # if self.grid[next_state.row][next_state.column] == 9:
         if np.isnan(self.grid[next_state.row][next_state.column])==True:
             next_state = state
 
@@ -171,14 +168,16 @@ class GridMapEnvironment():
     def reset(self):
         # Locate the agent at lower left corner.
         self.agent_state = State(self.row_length - 1, 0)
-        return self.agent_state
+
+
+        return self.state_idx_dict[self.agent_state]
 
     def step(self, action):
         next_state, reward, done = self.transit(self.agent_state, action)
         if next_state is not None:
             self.agent_state = next_state
-
-        return next_state, reward, done, None, None
+        next_state_idx = self.state_idx_dict[next_state]
+        return next_state_idx, reward, done, None, None
 
     def transit(self, state, action):
         transition_probs = self.transit_func(state, action)
@@ -196,45 +195,94 @@ class GridMapEnvironment():
         return next_state, reward, done
 
 
-    def draw_single_grid_map_values(self, ax, cnt,
-                                    grid_map_value, grid_map_policy=None, grid_action_value=None):
+    def draw_single_grid_map_values(self, ax, cnt=None,
+                                    grid_map_value=None,
+                                    grid_map_policy=None,
+                                    grid_action_value=None,
+                                    grid_agent_state_idx=None
+                                    ):
+
+
+
+
         for i in range(self.row_length):
             for j in range(self.column_length):
 
-                if (self.grid[i][j] == 1):
+
+                # temp_action_value = grid_action_value[i, j]
+
+                if (self.grid[i][j]==1):
                     ax.add_patch(mpatches.Rectangle((j, self.row_length - i - 1), 1, 1, fc='mediumaquamarine'))
                     continue
 
-                elif (self.grid[i][j] == 9):
+                elif np.isnan(self.grid[i][j]):
                     ax.add_patch(mpatches.Rectangle((j, self.row_length - i - 1), 1, 1, fc='silver'))
                     continue
 
-                elif (self.grid[i][j] == -1):
+                elif (self.grid[i][j]==-1):
                     ax.add_patch(mpatches.Rectangle((j, self.row_length - i - 1), 1, 1, fc='red'))
                     continue
 
                 center_x = 0.5 + j
                 center_y = self.row_length - 0.5 - i
 
-                if grid_map_policy is not None:
-                    action_value_dict = grid_map_policy[self.states[i * self.row_length + j]]
 
-                    up = action_value_dict[0]
-                    down = action_value_dict[1]
-                    left = action_value_dict[2]
-                    right = action_value_dict[3]
+                # print("grid_action_value")
+                # print(grid_action_value)
+                if grid_action_value is not None:
 
-                    plt.arrow(center_x, center_y + 0.2, 0.0, 0.15 * up, width=0.025 * up, head_width=0.075 * up,
-                              head_length=0.1 * up, fc='k', ec='k')
-                    plt.arrow(center_x, center_y - 0.2, 0.0, -0.15 * down, width=0.025 * down, head_width=0.075 * down,
-                              head_length=0.1 * down, fc='k', ec='k')
-                    plt.arrow(center_x + 0.2, center_y, 0.15 * right, 0.0, width=0.025 * right, head_width=0.075 * right,
-                              head_length=0.1 * right, fc='k', ec='k')
-                    plt.arrow(center_x - 0.2, center_y, -0.15 * left, 0.0, width=0.025 * left, head_width=0.075 * left,
-                              head_length=0.1 * left, fc='k', ec='k', label='Lokale Orientierung')
+                    action_value_fontsize=7.5
 
-                ax.add_patch(mpatches.Rectangle((j, self.row_length - i - 1), 1, 1, alpha=max(0, grid_map_value[i][j]), fc='darkorange'))
-                plt.text(center_x, center_y, str(round(grid_map_value[i][j], 2)), size=10, ha='center', va='center', color='k')
+                    temp_state = State(i, j)
+
+
+
+
+                    temp_action_value = grid_action_value[self.state_idx_dict[temp_state]]
+                    # print('temp_action_value: {}'.format(temp_action_value))
+                    ax.add_patch(mpatches.Rectangle((j, self.row_length - i - 1), 1, 1, fc='white'))
+                    # ax.add_patch(
+                    #     mpatches.Rectangle((j, self.row_lenght - state.row - 1), 1, 1, alpha=max(0, value_mean),
+                    #               fc='darkorange'))
+                    ax.text(center_x, center_y + 0.2, str(np.round(temp_action_value[0], 4)), fontsize=action_value_fontsize)
+                    ax.text(center_x, center_y - 0.2, str(np.round(temp_action_value[1], 4)), fontsize=action_value_fontsize)
+                    ax.text(center_x + 0.2, center_y, str(np.round(temp_action_value[2], 4)), fontsize=action_value_fontsize)
+                    ax.text(center_x - 0.2, center_y, str(np.round(temp_action_value[3], 4)), fontsize=action_value_fontsize)
+                    continue
+
+                if grid_map_value is not None:
+                    ax.add_patch(mpatches.Rectangle((j, self.row_length - i - 1), 1, 1, alpha=max(0, grid_map_value[i][j]), fc='darkorange'))
+                    plt.text(center_x, center_y, str(round(grid_map_value[i][j], 2)), size=10, ha='center', va='center', color='k')
+
+
+                    if grid_map_policy is not None:
+                        action_value_dict = grid_map_policy[self.states[i * self.row_length + j]]
+
+                        up = action_value_dict[0]
+                        down = action_value_dict[1]
+                        left = action_value_dict[2]
+                        right = action_value_dict[3]
+
+                        plt.arrow(center_x, center_y + 0.2, 0.0, 0.15 * up, width=0.025 * up, head_width=0.075 * up,
+                                  head_length=0.1 * up, fc='k', ec='k')
+                        plt.arrow(center_x, center_y - 0.2, 0.0, -0.15 * down, width=0.025 * down, head_width=0.075 * down,
+                                  head_length=0.1 * down, fc='k', ec='k')
+                        plt.arrow(center_x + 0.2, center_y, 0.15 * right, 0.0, width=0.025 * right, head_width=0.075 * right,
+                                  head_length=0.1 * right, fc='k', ec='k')
+                        plt.arrow(center_x - 0.2, center_y, -0.15 * left, 0.0, width=0.025 * left, head_width=0.075 * left,
+                                  head_length=0.1 * left, fc='k', ec='k', label='Lokale Orientierung')
+
+                # if grid_action_value is not None:
+
+        grid_agent_state = self.states[grid_agent_state_idx]
+
+        if grid_agent_state is not None:
+        #     agent_state_idx = self.state_idx_dict[grid_agent_state]
+            agent_center_x = 0.45 + grid_agent_state.column
+            agent_center_y = self.row_length - 0.5 - grid_agent_state.row
+            ax.add_patch(mpatches.Circle((agent_center_x, agent_center_y), 0.25, fc='grey'))
+            # ax.add_patch(mpatches.Circle((agent_center_x, self.row_length - agent_center_y - 1), 1, fc='grey'))
+
 
 
         # 目盛りと枠の非表示
@@ -245,6 +293,6 @@ class GridMapEnvironment():
         ax.set_xticks(np.array(range(self.column_length)) + 1)
         ax.set_yticks(np.array(range(self.row_length)) + 1)
         ax.grid(color='k', linewidth=2.0)
-        ax.title.set_text('Iteration: ' + str(cnt + 1))
+        # ax.title.set_text('Iteration: ' + str(cnt + 1))
 
         return ax
