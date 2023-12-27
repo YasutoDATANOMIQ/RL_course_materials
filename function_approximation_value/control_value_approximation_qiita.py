@@ -32,7 +32,7 @@ render = 0  # 描画モード
 num_episode = 301
 
 # Mountaincar
-env = gym.make('MountainCar-v0')
+env = gym.make('MountainCar-v0', render_mode="human")
 NUM_STATE = 2
 NUM_ACTION = 3
 
@@ -262,7 +262,7 @@ if __name__ == "__main__":
     agent_linear = LinearFuncAgent(N=30, sigma=0.1, alpha_ini=0.2, alpha_last=0, eps_ini=0, eps_last=0)
     # agent_NN = NNAgent(lr=1.E-4, h1=320, h2=160, in_dim=NUM_STATE, out_dim=NUM_ACTION, eps_ini=0, eps_last=0)
 
-    agent = agent_table  # 使用するエージェントを選択
+    agent = agent_linear  # 使用するエージェントを選択
 
     res = Result()  # 結果を格納するクラス
 
