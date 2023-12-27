@@ -1,0 +1,5 @@
+A stand-alone demo of RL with yfinance library. Ideally with algorithms without neural networks.
+```
+python main.py
+```
+
