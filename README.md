@@ -20,7 +20,8 @@
 
 ### Introducing "experiences" in RL 
  - [x] Making Q-learning, SARSA 
- - [ ] Animating the demo
+ - [x] Animating the demo
+ - [ ] (Optional) Visualizing action values as heatmaps
  - [ ] Making policy evaluation demo with a fixed policy
  - [ ] Introducing Open AI gym as an environment
  - [ ] Cleaning up and commenting on code
