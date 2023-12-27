@@ -28,6 +28,7 @@
 ### Elaborating RL by strategy mode settings
  - [x] Exploitation vs exploration demo with multi-armed bandit
  - [x] UCB1 demo with multi-armed bandit
+ - [x] (Optional) Finding double Q-learning demo
  - [ ] Exploitation vs exploration demo with Q-learning
  - [x] Fixing Dyna script
  - [ ] (Optional) Visualizing tree search with state transition diagram
