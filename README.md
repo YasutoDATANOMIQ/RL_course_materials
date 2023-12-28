@@ -1,3 +1,16 @@
+# Main components of RL course
+1. "RL" without "trial and errors"
+2. Introducing "experiences" and "trial and errors" in RL
+3. Elaborating RL traning
+   - n-step TD, eligibility traces
+   - Exploration-exploitation tradeoff
+   - On-policy vs off-policy
+   - Model-free vs model
+   - Actor-critic structures (in an example with advantage function)
+4. Making environments and agents richer
+   - 
+5. Advanced and practical topics, implementations
+
 # RL_course_materials
 
 - basic_MDP: introductory DP, RL demos with tabular methods
@@ -27,6 +40,8 @@
  - [ ] Cleaning up and commenting on code
 
 ### Elaborating RL by strategy mode settings
+ - [ ] Making n-step TD demo 
+ - [ ] (Optional) to make eligibility traces demo
  - [x] Exploitation vs exploration demo with multi-armed bandit
  - [x] UCB1 demo with multi-armed bandit
  - [x] (Optional) Finding double Q-learning demo
