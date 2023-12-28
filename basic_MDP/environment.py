@@ -274,7 +274,12 @@ class GridMapEnvironment():
 
                 # if grid_action_value is not None:
 
-        grid_agent_state = self.states[grid_agent_state_idx]
+        # Temporal naive error handling
+        try:
+            grid_agent_state = self.states[grid_agent_state_idx]
+        except:
+            grid_agent_state = None
+
 
         if grid_agent_state is not None:
         #     agent_state_idx = self.state_idx_dict[grid_agent_state]
