@@ -5,14 +5,14 @@
 
 1. "RL" without "trial and errors"
    - Implementing Bellman-equation-like recurrent formula 
-   - Policy iteration and value iteration on state transition diagmras or grid maps
+   - Policy iteration and value iteration on state transition diagrams or grid maps
 2. Introducing "experiences" and "trial and errors" in RL
    - Policy evaluation by trial and errors in a grid map
    - Control with Monte-Carlo method (batch data of experiences)
    - Control with TD loss (online data of experiences, Q-learning, Sarsa)
-3. Elaborating RL traning
+3. Elaborating RL training
    - n-step TD, (optional) eligibility traces 
-   - Exploration-exploitation tradeoff (first with an example of multi-armed bandin, and then grid map)
+   - Exploration-exploitation tradeoff (first with an example of multi-armed bandit, and then grid map)
    - On-policy vs off-policy (for now only with an example of Q-learning, Sarsa comparison)
    - Model-free vs model-based (only Dyna as an example control, and other scripts are demos of searching)
    - Actor-critic structures (with an example with advantage function on grid map)
@@ -22,8 +22,8 @@
    - Policy gradient demo for episodic and continuous cases
 5. Advanced and practical topics, implementations
    - A practical demo for RL in finance (ideally without deep learning)
-   - A practical demo for video Game RL (ideall with Deep Q-Netowork with some techniques in Rainbow)
-   - A practical demo with policy gradient and some RL libraries (e.g. tf angent)
+   - A practical demo for video Game RL (ideally with Deep Q-Network with some techniques in Rainbow)
+   - A practical demo with policy gradient and some RL libraries (e.g. tf agent)
 
 # Tasks left on each directory 
 
@@ -35,7 +35,7 @@ Note: directories are divided based on topics, not lecture parts
 
 ### basic_MDP
  - [x] Preparing basic grid map environment and agent
- - [x] Changing data structure of states in basic MDP environemnts (Don't use defaultdict)
+ - [x] Changing data structure of states in basic MDP environments (Don't use defaultdict)
  - [ ] (Optional) To make a simple state-transit diagram MDP with Networkx
  - [ ] Introducing Open AI gym as an environment
 
@@ -71,7 +71,7 @@ Note: directories are divided based on topics, not lecture parts
 
 ### function_approximation_value
  - [x] Finding implementation of control with linear function approximation
- - [ ] Stabilizing traiing of neural networks with experience replay
+ - [ ] Stabilizing training of neural networks with experience replay
  - [ ] Cleaning up and commenting on code
 
 ### function_approximation_policy
@@ -83,7 +83,7 @@ Note: directories are divided based on topics, not lecture parts
 
 ### Advanced and practical RL
  - [ ] (Benjamin) Financial RL (ideally without neural networks)
- - [ ] (Benjamin) Video game RL (probably with Deep Q-Netowrk)
+ - [ ] (Benjamin) Video game RL (probably with Deep Q-Network)
  - [ ] (Optional) Industrial RL with kuka simulator (hopefully with policy gradient and with TF Agent)
  - [ ] (Optional) Finding demos only to show for advanced topic such e.g. distributional neural nets
  - [ ] Cleaning up and commenting on code
