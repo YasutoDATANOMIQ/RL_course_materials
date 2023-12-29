@@ -1,5 +1,8 @@
 # Main components of RL course 
 
+![Alt text](images/RL_curriculum.png?raw=true "Course schedule")
+
+
 1. "RL" without "trial and errors"
    - Implementing Bellman-equation-like recurrent formula 
    - Policy iteration and value iteration on state transition diagmras or grid maps
