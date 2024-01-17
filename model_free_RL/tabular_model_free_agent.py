@@ -15,13 +15,29 @@ class ELAgent():
         self.reward_log = []
         self.history = []
 
+    def initialize_Q_value(self, state_space_size, action_space_size, max_reward=None):
+        """
+        Initializes the initial action values. When a max reward is give, the action values are optimistically
+        initialized with the maz reward, otherwise just with 0 values.
+        :param state_space_size:
+        :param action_space_size:
+        :param max_reward:
+        :return:
+        """
 
-    def initialize_Q_value(self, state_space_size, action_space_size,
-                           initialization_strategy='zero'):
-
-        self.Q = np.zeros((state_space_size, action_space_size))
+        if max_reward is None:
+            self.Q = np.zeros((state_space_size, action_space_size))
+        else:
+            self.Q = np.ones((state_space_size, action_space_size))*max_reward
 
     def policy(self, s, actions):
+        """
+        Returns an action given a state.
+        TODO: To integrate softmax policy with temperature, action selection with UCB.
+        :param s:
+        :param actions:
+        :return:
+        """
 
         if type(s)==tuple:
             s = s[0]
@@ -42,6 +58,13 @@ class ELAgent():
         self.reward_log.append(reward)
 
     def show_reward_log(self, interval=50, episode=-1):
+        """
+        Plots a logs of average reward gained with standard deviations
+        :param interval:
+        :param episode:
+        :return:
+        """
+
         if episode >0:
             rewards = self.reward_log[-interval:]
             mean = np.round(np.mean(rewards), 3)
@@ -69,7 +92,15 @@ class ELAgent():
             plt.show()
 
 
+
     def extract_episodes_to_animate(self, first_episode_idx, last_episode_idx, episode_interval):
+        """
+        # TODO: It might be more efficient to return only indexes of episodes rather thatn history of episode itself.
+        :param first_episode_idx:
+        :param last_episode_idx:
+        :param episode_interval:
+        :return:
+        """
         episode_range = range(first_episode_idx, last_episode_idx, episode_interval)
         episode_slice = slice(first_episode_idx, last_episode_idx, episode_interval)
 
@@ -83,13 +114,17 @@ class ELAgent():
         return episodes_to_animate_flattened, episode_number_flattened, episode_index_flattened
 
     def draw_grid_map_trial_and_errors(self, first_episode_idx, last_episode_idx, episode_interval):
+        """
+        Exports a gif animation of extracted frames.
+        Just draws each frame as a matplotlib figure.
+        :param first_episode_idx:
+        :param last_episode_idx:
+        :param episode_interval:
+        :return:
+        """
         extracted_history_flattened,\
             episode_number_flattened, \
             episode_index_flattened= self.extract_episodes_to_animate(first_episode_idx, last_episode_idx, episode_interval)
-
-        # plt.clf()
-        # fig = plt.figure(figsize=(3,3))
-        # plt.subplots_adjust(wspace=0.3, hspace=0.3)
 
         value_list = []
 
@@ -100,7 +135,6 @@ class ELAgent():
         for frame_idx, (agent_state, action_value) in enumerate(extracted_history_flattened):
             plt.clf()
             fig = plt.figure(figsize=(10, 10))
-            # ax = fig.add_subplot(2, len(extracted_history_flattened)//2 + 1, frame_idx + 1)
             ax = fig.add_subplot(1, 1, 1)
 
             num_font_size = 10
@@ -122,19 +156,9 @@ class ELAgent():
 
             frames.append(pillow_image)
 
+
+        # TODO: This might not be the best way to make a gif animation. All the matplotlib windows are open.
         frames[0].save('animated.gif', format='GIF', append_images=frames[1:], save_all=True, duration=500, loop=0)
-
-        # # Show the Pillow image (optional)
-        # pillow_image.show()
-        #
-        # output_filename = "output_image.png"
-        # pillow_image.save(output_filename)
-
-
-
-
-        # plt.savefig("q_learning_animation_demo.png", bbox_inches='tight')
-        # plt.show()
 
 
 
@@ -144,18 +168,19 @@ class QLearningAgent(ELAgent):
         super().__init__(epsilon)
         self.env = env
 
-    def learn(self, env, episode_count=1000, gamma=0.9, learning_rate=0.1, render=False, report_interval=50):
+    def learn(self, env, episode_count=1000, gamma=0.9, learning_rate=0.1, render=False, report_interval=50,
+              max_reward=None):
         self.init_log()
 
-        try:
+        try: # First trying to get actions in OpenAI Gym format
             actions = list(range(env.action_space.n))
-        except:
+        except: # Otherwise getting actions in the custom grid map environment formats
             actions =  list(range(len(env.actions)))
 
-        try:
-            self.initialize_Q_value(env.observation_space.n, env.action_space.n)
-        except:
-            self.initialize_Q_value(len(self.env.states), len(self.env.actions))
+        try: # First trying to get actions in OpenAI Gym format
+            self.initialize_Q_value(env.observation_space.n, env.action_space.n, max_reward=max_reward)
+        except: # Otherwise getting actions in the custom grid map environment formats
+            self.initialize_Q_value(len(self.env.states), len(self.env.actions), max_reward=max_reward)
 
         for episode_idx in range(episode_count):
             history_one_episode = []
@@ -163,10 +188,6 @@ class QLearningAgent(ELAgent):
             s = env.reset()
             if type(s) == tuple:
                 s = s[0]
-
-            print("s: {}".format(s))
-            print("self.Q")
-            print(self.Q)
 
             history_one_episode.append((s, np.copy(self.Q)))
 
@@ -182,12 +203,7 @@ class QLearningAgent(ELAgent):
                 TD_loss = learning_rate * (gain - estimated)
                 self.Q[s][a] += TD_loss
 
-                print("n_state: {}".format(n_state))
-                print("self.Q")
-                print(self.Q)
-
                 history_one_episode.append((n_state, np.copy(self.Q)))
-
                 s = n_state
 
             else:
@@ -196,7 +212,6 @@ class QLearningAgent(ELAgent):
             self.history.append(history_one_episode)
 
             if episode_idx != 0 and episode_idx % report_interval == 0:
-            # if (episode_idx+1)%report_interval==0:
                 self.show_reward_log(episode=episode_idx)
 
 
