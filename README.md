@@ -53,6 +53,8 @@ Note: directories are divided based on topics, not lecture parts
  - [ ] Making n-step TD demo 
  - [ ] (Optional) to make eligibility traces demo
  - [ ] Tabular actor-critic RL with advantage function
+ - [ ] Conducting experiments several times 
+ - [ ] Comparing results by different agents
  - [ ] Cleaning up and commenting on code
 
 
@@ -60,7 +62,12 @@ Note: directories are divided based on topics, not lecture parts
  - [x] Exploitation vs exploration demo with multi-armed bandit
  - [x] UCB1 demo with multi-armed bandit
  - [x] (Optional) Finding double Q-learning demo
- - [ ] Exploitation vs exploration demo with Q-learning
+ - [x] (Optional) Implementing double Q-learning on gripd map env
+ - [ ] Exploitation vs exploration demo with Q-learning by changing utility functions
+   - [ ] Epsilon-greedy 
+   - [ ] Softmax policy with different temperatures
+   - [ ] Optimistic initialization
+   - [ ] UCB (upper confidence bound)
  - [ ] Cleaning up and commenting on code
 
 ### model_based
