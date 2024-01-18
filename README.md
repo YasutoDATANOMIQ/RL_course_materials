@@ -64,9 +64,9 @@ Note: directories are divided based on topics, not lecture parts
  - [x] (Optional) Finding double Q-learning demo
  - [x] (Optional) Implementing double Q-learning on gripd map env
  - [ ] Exploitation vs exploration demo with Q-learning by changing utility functions
-   - [ ] Epsilon-greedy 
+   - [x] Epsilon-greedy 
    - [ ] Softmax policy with different temperatures
-   - [ ] Optimistic initialization
+   - [x] Optimistic initialization
    - [ ] UCB (upper confidence bound)
  - [ ] Cleaning up and commenting on code
 
