@@ -43,7 +43,7 @@ class StateTransitEnvironment():
 
 class GridMapEnvironment():
 
-    def __init__(self, grid, move_prob=0.8):
+    def __init__(self, grid, move_prob=0.8, constant_reward=-0.04):
         # grid is 2d-array. Its values are treated as an attribute.
         # Kinds of attribute is following.
         #  0: ordinary cell
@@ -57,7 +57,7 @@ class GridMapEnvironment():
 
         # Default reward is minus. Just like a poison swamp.
         # It means the agent has to reach the goal fast!
-        self.default_reward = -0.04
+        self.default_reward = constant_reward
 
         # Agent can move to a selected direction in move_prob.
         # It means the agent will move different direction
@@ -115,7 +115,7 @@ class GridMapEnvironment():
         return transition_probs
 
     def can_action_at(self, state):
-        if self.grid[state.row][state.column] == 0:
+        if self.grid[state.row][state.column] == 0.:
             return True
         else:
             return False
@@ -154,13 +154,13 @@ class GridMapEnvironment():
 
         # Check an attribute of next state.
         attribute = self.grid[state.row][state.column]
-        if attribute == 1:
+        if attribute > 0.:
             # Get reward! and the game ends.
-            reward = 1
+            reward = attribute
             done = True
-        elif attribute == -1:
+        elif attribute < 0.:
             # Get damage! and the game ends.
-            reward = -1
+            reward = attribute
             done = True
 
         return reward, done
@@ -211,7 +211,7 @@ class GridMapEnvironment():
 
                 # temp_action_value = grid_action_value[i, j]
 
-                if (self.grid[i][j]==1):
+                if (self.grid[i][j]>0):
                     ax.add_patch(mpatches.Rectangle((j, self.row_length - i - 1), 1, 1, fc='mediumaquamarine'))
                     continue
 
@@ -219,7 +219,7 @@ class GridMapEnvironment():
                     ax.add_patch(mpatches.Rectangle((j, self.row_length - i - 1), 1, 1, fc='silver'))
                     continue
 
-                elif (self.grid[i][j]==-1):
+                elif (self.grid[i][j]<0):
                     ax.add_patch(mpatches.Rectangle((j, self.row_length - i - 1), 1, 1, fc='red'))
                     continue
 
