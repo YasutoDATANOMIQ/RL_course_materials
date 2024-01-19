@@ -5,6 +5,18 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 
 
+action_dict = {
+        'up': 0,
+        'down': 1,
+        'left': 2,
+        'right': 3,
+        '↑': 0,
+        '↓': 1,
+        '←': 2,
+        '→': 3,
+}
+
+
 class State():
 
     def __init__(self, row=-1, column=-1):
@@ -168,8 +180,6 @@ class GridMapEnvironment():
     def reset(self):
         # Locate the agent at lower left corner.
         self.agent_state = State(self.row_length - 1, 0)
-
-
         return self.state_idx_dict[self.agent_state]
 
     def step(self, action):
@@ -202,14 +212,8 @@ class GridMapEnvironment():
                                     grid_agent_state_idx=None
                                     ):
 
-
-
-
         for i in range(self.row_length):
             for j in range(self.column_length):
-
-
-                # temp_action_value = grid_action_value[i, j]
 
                 if (self.grid[i][j]>0):
                     ax.add_patch(mpatches.Rectangle((j, self.row_length - i - 1), 1, 1, fc='mediumaquamarine'))
@@ -226,9 +230,6 @@ class GridMapEnvironment():
                 center_x = 0.5 + j
                 center_y = self.row_length - 0.5 - i
 
-
-                # print("grid_action_value")
-                # print(grid_action_value)
                 if grid_action_value is not None:
 
                     action_value_fontsize=7.5
@@ -239,11 +240,7 @@ class GridMapEnvironment():
 
 
                     temp_action_value = grid_action_value[self.state_idx_dict[temp_state]]
-                    # print('temp_action_value: {}'.format(temp_action_value))
                     ax.add_patch(mpatches.Rectangle((j, self.row_length - i - 1), 1, 1, fc='white'))
-                    # ax.add_patch(
-                    #     mpatches.Rectangle((j, self.row_lenght - state.row - 1), 1, 1, alpha=max(0, value_mean),
-                    #               fc='darkorange'))
                     ax.text(center_x, center_y + 0.2, str(np.round(temp_action_value[0], 4)), fontsize=action_value_fontsize)
                     ax.text(center_x, center_y - 0.2, str(np.round(temp_action_value[1], 4)), fontsize=action_value_fontsize)
                     ax.text(center_x + 0.2, center_y, str(np.round(temp_action_value[2], 4)), fontsize=action_value_fontsize)
@@ -272,8 +269,6 @@ class GridMapEnvironment():
                         plt.arrow(center_x - 0.2, center_y, -0.15 * left, 0.0, width=0.025 * left, head_width=0.075 * left,
                                   head_length=0.1 * left, fc='k', ec='k', label='Lokale Orientierung')
 
-                # if grid_action_value is not None:
-
         # Temporal naive error handling
         try:
             grid_agent_state = self.states[grid_agent_state_idx]
@@ -282,13 +277,9 @@ class GridMapEnvironment():
 
 
         if grid_agent_state is not None:
-        #     agent_state_idx = self.state_idx_dict[grid_agent_state]
             agent_center_x = 0.45 + grid_agent_state.column
             agent_center_y = self.row_length - 0.5 - grid_agent_state.row
             ax.add_patch(mpatches.Circle((agent_center_x, agent_center_y), 0.25, fc='grey'))
-            # ax.add_patch(mpatches.Circle((agent_center_x, self.row_length - agent_center_y - 1), 1, fc='grey'))
-
-
 
         # 目盛りと枠の非表示
         ax.tick_params(axis='both', which='both', bottom='off', top='off',
@@ -298,6 +289,5 @@ class GridMapEnvironment():
         ax.set_xticks(np.array(range(self.column_length)) + 1)
         ax.set_yticks(np.array(range(self.row_length)) + 1)
         ax.grid(color='k', linewidth=2.0)
-        # ax.title.set_text('Iteration: ' + str(cnt + 1))
 
         return ax
