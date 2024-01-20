@@ -53,8 +53,8 @@ Note: directories are divided based on topics, not lecture parts
  - [ ] Making n-step TD demo 
  - [ ] (Optional) to make eligibility traces demo
  - [ ] Tabular actor-critic RL with advantage function
- - [ ] Conducting experiments several times 
- - [ ] Comparing results by different agents
+ - [x] Conducting experiments several times 
+ - [x] Comparing results by different agents
  - [ ] Cleaning up and commenting on code
 
 
