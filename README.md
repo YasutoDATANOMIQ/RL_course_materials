@@ -43,6 +43,8 @@ Note: directories are divided based on topics, not lecture parts
 ### dynamic_programming
  - [x] Visualizing DP with grid map
  - [ ] (Optional) Making DP demo with state-transit diagrams
+   - [x] Making a skelton script
+   - [ ] Visualizing results with Networkx
  - [ ] Cleaning up and commenting on code
 
 ### model_free_RL 
