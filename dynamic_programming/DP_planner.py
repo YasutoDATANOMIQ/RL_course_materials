@@ -23,7 +23,7 @@ class Planner():
         self.env.reset()
         self.log = []
 
-    def plan(self, gamma=0.9, threshold=0.0001):
+    def plan(self, gamma=0.9, threshold=0.001):
         raise Exception("Planner have to implements plan method.")
 
     def transitions_at(self, state, action):
@@ -52,6 +52,7 @@ class ValueIterationPlanner(Planner):
         actions = self.env.actions
         V = {}
         for s in self.env.states:
+
             # Initialize each state's expected reward.
             V[s] = 0
 
@@ -75,7 +76,7 @@ class ValueIterationPlanner(Planner):
 
             if delta < threshold:
                 break
-    def draw_grid_map_vlaue_iteration_planning(self):
+    def draw_grid_map_vlaue_iteration_planning(self, gamma=0.9):
         fig = plt.figure(figsize=(21, 6))
         fig.suptitle("Value iteration", fontsize=25)
         # plt.subplots_adjust(left=0, right=1, bottom=0.0, top=1, wspace=1, hspace=1)
@@ -83,15 +84,15 @@ class ValueIterationPlanner(Planner):
 
         value_list = []
 
-        for cnt, value in enumerate(self.plan()):
+        for cnt, value in enumerate(self.plan(gamma=gamma)):
             value_list.append(value)
 
 
+
         for cnt, value in enumerate(value_list):
-            # print("Iteration: " + str(cnt + 1))
             ax = fig.add_subplot(2, len(value_list)//2, cnt + 1)
             num_font_size = 10
-            ax = self.draw_single_grid_map_values(ax, value, cnt)
+            ax = self.env.draw_single_grid_map_values(ax, cnt, grid_map_value=value)
 
         norm = mpl.colors.Normalize(vmin=0, vmax=1)
         sm = plt.cm.ScalarMappable(cmap=mpl.cm.Oranges, norm=norm)
@@ -131,6 +132,7 @@ class PolicyIterationPlanner(Planner):
                 self.policy[s][a] = 1 / len(actions)
 
     def estimate_by_policy(self, gamma, threshold):
+
         V = {}
         for s in self.env.states:
             # Initialize each state's expected reward.
@@ -199,17 +201,13 @@ class PolicyIterationPlanner(Planner):
                 # If policy isn't updated, stop iteration
                 break
 
-    def draw_grid_map_policy_iteration_planning(self):
+    def draw_grid_map_policy_iteration_planning(self, gamma=0.9, thresh=0.01):
         fig = plt.figure(figsize=(24, 8))
         fig.suptitle("Policy iteration", fontsize=40)
 
-
-        # pol_iter_plan = self.plan()
-
-
         value_plan_list = []
 
-        for cnt, (value, policy) in enumerate(self.plan()):
+        for cnt, (value, policy) in enumerate(self.plan(gamma=gamma)):
             value_plan_list.append((value, policy))
 
 
@@ -226,8 +224,8 @@ class PolicyIterationPlanner(Planner):
         cbar_ax = fig.add_axes([0.12, -0.025, 0.7, 0.05])
         cbar = plt.colorbar(sm,
                             ticks=[0, 0.5, 1],
-                            orientation='horizontal'
-                            , cax=cbar_ax,
+                            orientation='horizontal',
+                            cax=cbar_ax,
                             norm=norm)
         cbar.ax.set_xticklabels(['Low value', 'Medium value', 'High vlaue'], fontsize=20)  # horizontal colorbar
         grey_patch = mpatches.Patch(color='mediumaquamarine', label='Treasure')
