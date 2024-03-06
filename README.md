@@ -2,6 +2,10 @@
 
 ![Alt text](images/RL_curriculum.png?raw=true "Course schedule")
 
+Sample lecture slide
+   - Lecture 1: https://www.slideshare.net/slideshows/reinforcement-course-material-samples-lecture-1/266653268
+   - Lecture 2: https://www.slideshare.net/slideshows/how-to-formulate-reinforcement-learning-in-illustrative-ways/266653309
+
 
 1. "RL" without "trial and errors"
    - Implementing Bellman-equation-like recurrent formula 
